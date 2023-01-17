@@ -21,7 +21,7 @@ class SysSignalListener(EntrypointProcessor):
 
     async def pre_start(self, entrypoint: Entrypoint, services: t.Iterable[Service]):
 
-        stop_entrypoint_signal = asyncio.Event(loop=entrypoint.loop)
+        stop_entrypoint_signal = asyncio.Event()
 
         async def listener():
             with suppress(CancelledError):

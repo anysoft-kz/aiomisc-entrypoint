@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aiomisc-entrypoint"
-version = "1.0.0"
+version = "1.0.1"
 description = ""
 homepage = "https://github.com/anysoft-kz/aiomisc-entrypoint"
 repository = "https://github.com/anysoft-kz/aiomisc-entrypoint"

@@ -50,3 +50,10 @@ ep.first_start_last_stop()
 
 ep.run_until_complete(main())
 ```
+
+
+Release Notes:
+
+v1.0.1
+- fix error with set loop for `asyncio.Event` in `SysSignalListener`
+
