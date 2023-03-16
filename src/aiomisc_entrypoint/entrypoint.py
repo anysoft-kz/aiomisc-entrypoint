@@ -4,8 +4,8 @@ import typing as t
 from aiomisc import entrypoint, Service
 from aiomisc_log import LogFormat
 
+from .abstractions import AbstractEntrypointProxy, AbstractEntrypointProcessor
 from .processors import (
-    EntrypointProcessor,
     SysSignalListener,
     ClearEnviron,
     ChangeUser,
@@ -14,7 +14,7 @@ from .processors import (
 )
 
 
-class Entrypoint:
+class Entrypoint(AbstractEntrypointProxy):
 
     def __init__(self, *services: Service,
                  loop: t.Optional[asyncio.AbstractEventLoop] = None,
@@ -47,14 +47,19 @@ class Entrypoint:
             kwargs['log_buffer_size'] = log_buffer_size
         if log_flush_interval is not None:
             kwargs['log_flush_interval'] = log_flush_interval
-
+        self._services = services
         self._entrypoint = entrypoint(*services, **kwargs)
 
-    def add_processor(self, processor: EntrypointProcessor):
+    @property
+    def services(self):
+        return self._services
+
+    def add_processor(self, processor: AbstractEntrypointProcessor):
         self._entrypoint.pre_start.connect(processor.pre_start)
         self._entrypoint.post_start.connect(processor.post_start)
         self._entrypoint.pre_stop.connect(processor.pre_stop)
         self._entrypoint.post_stop.connect(processor.post_stop)
+        processor.set_entrypoint_proxy(self)
 
     def run_until_complete(self, coro: t.Awaitable):
         with self._entrypoint as loop:

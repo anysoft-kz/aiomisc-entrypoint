@@ -8,7 +8,7 @@ from threading import Timer
 import pytest
 from aiomisc import entrypoint as EP, Service, get_context
 from aiomisc_entrypoint import Entrypoint
-from aiomisc_entrypoint.processors.base import EntrypointProcessor
+from aiomisc_entrypoint.abstractions import AbstractEntrypointProcessor
 
 
 def test_entrypoint_signals():
@@ -25,7 +25,7 @@ def test_entrypoint_signals():
         async def stop(self, exception=None):
             result.append('service stop success')
 
-    class TestProcessor(EntrypointProcessor):
+    class TestProcessor(AbstractEntrypointProcessor):
 
         async def pre_start(self, entrypoint: EP, services: typing.Iterable[Service]):
             result.append('pre_start success')

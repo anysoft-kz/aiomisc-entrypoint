@@ -5,16 +5,18 @@ from asyncio import CancelledError
 from contextlib import suppress
 from signal import SIGINT, SIGTERM
 
-from .base import EntrypointProcessor, Entrypoint, Service
+from aiomisc_entrypoint.abstractions import AbstractEntrypointProcessor
+from aiomisc import Service, entrypoint as Entrypoint  # noqa
 
 logger = logging.getLogger('aiomisc_entrypoint')
 
 
-class SysSignalListener(EntrypointProcessor):
+class SysSignalListener(AbstractEntrypointProcessor):
 
     _signal_listener: asyncio.Task
 
     def __init__(self, *stop_signals: t.Sequence[int]):
+        super().__init__()
         if len(stop_signals) == 0:
             stop_signals = (SIGTERM, SIGINT)
         self._processed_signals = stop_signals

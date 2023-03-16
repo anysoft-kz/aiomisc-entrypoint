@@ -1,11 +1,13 @@
 import asyncio
 import typing as t
-from .base import EntrypointProcessor, Entrypoint, Service
+from aiomisc_entrypoint.abstractions import AbstractEntrypointProcessor
+from aiomisc import Service, entrypoint as Entrypoint  # noqa
 
 
-class RegisterServiceInContext(EntrypointProcessor):
+class RegisterServiceInContext(AbstractEntrypointProcessor):
 
     def __init__(self):
+        super().__init__()
         self.__tasks = []
 
     async def pre_start(self, entrypoint: Entrypoint, services: t.Iterable[Service]):

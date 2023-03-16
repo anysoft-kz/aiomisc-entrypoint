@@ -1,12 +1,13 @@
 import os
 import typing as t
+from aiomisc_entrypoint.abstractions import AbstractEntrypointProcessor
+from aiomisc import Service, entrypoint as Entrypoint  # noqa
 
-from .base import EntrypointProcessor, Entrypoint, Service
 
-
-class ChangeUser(EntrypointProcessor):
+class ChangeUser(AbstractEntrypointProcessor):
 
     def __init__(self, username: str = None):
+        super().__init__()
         if username is None:
             username = 'nobody'
         try:
@@ -18,6 +19,7 @@ class ChangeUser(EntrypointProcessor):
         except ImportError:
             self.__uid = None
             self.__gid = None
+
 
     async def post_start(self, entrypoint: Entrypoint, services: t.Iterable[Service]):
 
