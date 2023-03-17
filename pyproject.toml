@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aiomisc-entrypoint"
-version = "1.0.1"
+version = "1.1.0"
 description = ""
 homepage = "https://github.com/anysoft-kz/aiomisc-entrypoint"
 repository = "https://github.com/anysoft-kz/aiomisc-entrypoint"
@@ -10,7 +10,7 @@ packages = [{include = "aiomisc_entrypoint", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-aiomisc = "^16.2.10"
+aiomisc = ">=16.0, <18.0"
 
 
 [tool.poetry.group.dev.dependencies]

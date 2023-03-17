@@ -1,8 +1,8 @@
 import asyncio
 import typing as t
 from collections import defaultdict, namedtuple
-
-from .base import EntrypointProcessor, Entrypoint, Service
+from aiomisc_entrypoint.abstractions import AbstractEntrypointProcessor
+from aiomisc import Service, entrypoint as Entrypoint  # noqa
 
 
 __all__ = ['ServiceStartDependency']
@@ -10,14 +10,16 @@ __all__ = ['ServiceStartDependency']
 DependencyItem = namedtuple('DependencyItem', ('start', 'stop'))
 
 
-class ServiceStartDependency(EntrypointProcessor):
+class ServiceStartDependency(AbstractEntrypointProcessor):
 
     async def pre_start(self, entrypoint: Entrypoint, services: t.Sequence[Service]):
+        services = self._entrypoint_proxy.services
         if len(services) > 1:
             _inject_decorators(services)
 
     async def post_stop(self, entrypoint: Entrypoint):
-        for svc in entrypoint.services:
+        services = self._entrypoint_proxy.services
+        for svc in services:
             if 'start' in svc.__dict__:
                 del svc.start
             if 'stop' in svc.__dict__:
