@@ -63,7 +63,7 @@ class Entrypoint(AbstractEntrypointProxy):
 
     def run_until_complete(self, coro: t.Awaitable):
         with self._entrypoint as loop:
-            loop.run_until_complete(coro)
+            return loop.run_until_complete(coro)
 
     def run_forever(self):
         with self._entrypoint as loop:
